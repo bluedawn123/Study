@@ -16,10 +16,12 @@ scaler.fit(x)
 x = scaler.transform(x)
 print(x.shape)
 
+
 # PCA
 from sklearn.decomposition import PCA
 pca = PCA(n_components = 8)                            # n_components = : output되는 column의 개수를 지정해줌   
 pca.fit(x)
+
 x = pca.transform(x).reshape(x.shape[0], 8, 1, 1)
 print(x.shape)
 
@@ -28,7 +30,7 @@ from sklearn.model_selection import train_test_split
 x_train, x_test , y_train, y_test = train_test_split(x, y, random_state = 30,
                                     test_size = 101/506)
 
-
+"""
 #2. model
 model = Sequential()
 model.add(Conv2D(10,(2, 2), activation = 'relu', padding ='same', input_shape = (8, 1, 1)))
@@ -158,3 +160,4 @@ from sklearn.metrics import r2_score
 r2_y_predict = r2_score(y_test, y_predict)
 print("R2: ", r2_y_predict)
 
+"""

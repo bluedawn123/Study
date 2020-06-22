@@ -30,15 +30,6 @@ print("x_train의 shape : ", x_train[0].shape)  #(28,28)
 #plt.imshow(x_train[0])
 #plt.show()
 
-#분류를 어떻게 하는거임...? 하는 방법...?
-
-
-#원핫인코딩을 쓰는 이유?  왜 (정수) 0부터 9?
-
-
-
-
-
 #데이터 전처리 1. y의 원핫인코딩 #다중분류
 from keras.utils import np_utils
 
@@ -87,8 +78,6 @@ model.fit(x_train,y_train, epochs=5, batch_size = 2)
 loss, acc = model.evaluate(x_test, y_test, batch_size=2) #x,y를 평가하여 loss와 acc에 반환하겠다.
 print("loss : ", loss)
 print("acc : ", acc)
-
-
 
 '''
 x_pred = (x_test)

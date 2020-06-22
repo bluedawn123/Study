@@ -68,7 +68,7 @@ ts_board = TensorBoard(log_dir = 'graph', histogram_freq =0,
 
 #3. 훈련,  compile, fit 
 model.compile(loss = 'mse', optimizer = 'adam', metrics = ['mse'])
-hist = model.fit(x_train, y_train, epochs =300, batch_size = 16,
+hist = model.fit(x_train, y_train, epochs =10, batch_size = 16,
                             validation_split = 0.2, verbose =2,
                             callbacks = [es, cp, ts_board])
 

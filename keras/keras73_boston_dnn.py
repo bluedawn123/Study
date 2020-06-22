@@ -2,6 +2,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
 from sklearn.datasets import load_boston
+
 boston = load_boston()
 
 print(boston)
@@ -16,8 +17,10 @@ from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 scaler.fit(x)
 x = scaler.transform(x)
+
 print(x[0,-1])
 
+"""
 # train_test
 from sklearn.model_selection import train_test_split
 x_train, x_test , y_train, y_test = train_test_split(x, y, random_state = 66,
@@ -58,7 +61,7 @@ ts_board = TensorBoard(log_dir = 'graph', histogram_freq =0,
 
 #3. compile, fit 
 model.compile(loss = 'mse', optimizer = 'adam', metrics = ['mse'])
-hist = model.fit(x_train, y_train, epochs =1000, batch_size = 64,
+hist = model.fit(x_train, y_train, epochs =100, batch_size = 64,
                             validation_split = 0.2, verbose =2,
                             callbacks = [es, cp, ts_board])
 
@@ -104,3 +107,4 @@ plt.ylabel('mse')
 plt.legend()
 
 plt.show()
+"""

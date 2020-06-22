@@ -1,6 +1,4 @@
 #과제 2
-#시퀀셜
-
 #제일 하단에 주석으로 acc와 loss 결과 명시 
 
 import numpy as np
@@ -20,8 +18,6 @@ print("y_train.shape : ", y_train.shape)
 print("y_test.shape : ", y_test.shape)
 
 print("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
-
-
 
 #데이터 전처리 1. y의 원핫인코딩 #다중분류
 from keras.utils import np_utils
@@ -45,8 +41,6 @@ print(" ")
 print("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
 
 
-
-
 ###2. 모델링                 ☆☆☆☆와꾸 맞추김☆☆☆☆  Cnn에 시퀀셜 이므로 (___ , ___, ___)
 
 model = Sequential()
@@ -63,8 +57,6 @@ model.add(MaxPooling2D(pool_size=2))
 model.add(Flatten()) # 2차원으로 변경
 model.add(Dense(10,activation='softmax'))
 model.summary()
-
-
 
 
 #훈련

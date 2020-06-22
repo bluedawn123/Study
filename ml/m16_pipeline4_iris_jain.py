@@ -67,10 +67,9 @@ from sklearn.pipeline import Pipeline, make_pipeline
 pipe = Pipeline([('scaler', StandardScaler()), ('deep', model)])
 # pipe = make_pipeline(StandardScaler(), model)                        # kerasclassifier__ :
 
-# gridsearch
+# RandomizedSearch
 from sklearn.model_selection import GridSearchCV,  RandomizedSearchCV
 search = RandomizedSearchCV(pipe, hyperparameters, cv = 3)                        
-
 
 # fit
 search.fit(x_train, y_train)
