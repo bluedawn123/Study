@@ -33,9 +33,12 @@ model = DecisionTreeClassifier(max_depth = 4)
 model.fit(x_train, y_train)
 acc = model.score(x_test, y_test)
 
-print(model.feature_importances_)
+print("모델의 피쳐 임포턴스 : ", model.feature_importances_)
 
-n_features = cancer.data.shape[1]   #30
+print("cancer.data : ", cancer.data)  #  [[1.799e+01 1.038e+01 1.228e+02 ... 2.654e-01 4.601e-01 1.189e-01]
+
+n_features = cancer.data.shape[1]   #30 즉, n feature을 암 데이터의 열의 갯수로
+
 #트리구조
 def plot_feature_importances_cancer(model):
     n_features = cancer.data.shape[1]         #30
