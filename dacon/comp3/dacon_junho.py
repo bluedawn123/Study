@@ -17,7 +17,7 @@ train_target = pd.read_csv('./data/dacon/comp2/train_target.csv', header = 0, in
 print("train_features.shape : ", train_features.shape)  #(1050000, 5)      
 print("test_features.shape : ", test_features.shape)    #(262500, 5)     
 print("train_target.shape : ", train_target.shape)      #(2800, 4)         
-print("submission.shape : ", submission.shape)          #(700, 4)               
+print("submission.shape : ", submission.shape)                        
 
 #결측값 확인
 print(train_features.isnull().sum())  #결측값 x
