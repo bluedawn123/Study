@@ -72,3 +72,4 @@ print("mse", mse)
 y_predict = model.predict(x_test)
 print("y예측값:",y_predict)
 
+score = model.score(y_test, y_predict)
