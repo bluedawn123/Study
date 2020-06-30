@@ -75,4 +75,4 @@ lgbm_clf.fit(X_train, y_train, early_stopping_rounds=80, eval_metric="auc", eval
                 verbose=True)
 
 lgbm_roc_score = roc_auc_score(y_test, lgbm_clf.predict_proba(X_test)[:,1],average='macro')
-print('ROC AUC: {0:.4f}'.format(lgbm_roc_score))
+print('ROC AUC: {0:.4f}'.format(lgbm_roc_score)) ###
