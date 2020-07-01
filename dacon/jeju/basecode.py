@@ -21,6 +21,9 @@ data['year'] = data['REG_YYMM'].apply(lambda x: grap_year(x))
 data['month'] = data['REG_YYMM'].apply(lambda x: grap_month(x))
 data = data.drop(['REG_YYMM'], axis=1)
 
+print(data)
+
+'''
 # 데이터 정제
 df = data.copy()
 df = df.drop(['CARD_CCG_NM', 'HOM_CCG_NM'], axis=1)
@@ -89,3 +92,6 @@ submission = submission.merge(temp, left_on=['REG_YYMM', 'CARD_SIDO_NM', 'STD_CL
 submission.index.name = 'id'
 submission.to_csv('submission2.csv', encoding='utf-8-sig')
 submission.head()
+###
+
+'''
