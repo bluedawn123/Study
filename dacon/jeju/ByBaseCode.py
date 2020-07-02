@@ -139,7 +139,7 @@ x_train, x_test, y_train, y_test = train_test_split(
 '''
 
 #2. RF
-model = RandomForestRegressor(n_jobs=-1, random_state=0)   RMSLE: 0.054, RMSE: 0.740, MAE: 0.512 
+model = RandomForestRegressor(n_jobs=-1, random_state=0)  # RMSLE: 0.054, RMSE: 0.740, MAE: 0.512 
 model.fit(x_train, y_train)
 pred = model.predict(x_test)
 print("pred : ", pred)
