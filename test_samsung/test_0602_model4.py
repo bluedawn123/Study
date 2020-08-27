@@ -113,3 +113,4 @@ model.summary()
 #3. compile, fit
 model.compile(loss ='mse', optimizer = 'adam', metrics = ['mse'])
 model.fit([x_sam, x_hit], y_sam, epochs = 100, batch_size = 32)
+

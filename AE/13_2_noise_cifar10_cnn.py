@@ -1,83 +1,81 @@
-from keras.datasets import cifar10, mnist
-from keras.utils import np_utils
-from keras.models import Sequential, Model
-from keras.layers import Dense, LSTM, Conv2D
-from keras.layers import Flatten, MaxPooling2D, Dropout, Input
-import matplotlib.pyplot as plt
-from keras.utils import to_categorical
+# 20-08-05
+# Autoencoder CNN and cifar10
+
 import numpy as np
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, Conv2DTranspose, MaxPooling2D, UpSampling2D
+from tensorflow.keras.layers import BatchNormalization, Activation
 
-#CNN함수 정의
-def autoencoder(hidden_layer_size):
+# AE 함수 make
+def autoencoder():
     model = Sequential()
-    model.add(Conv2D(filters = 256, kernel_size = (3, 3), padding = 'valid', 
-                    input_shape= (28, 28, 1), activation = 'relu'))
-    model.add(Conv2D(filters = 128, kernel_size = (3, 3), padding = 'valid', activation = 'relu'))
+    model.add(Conv2D(32, (3, 3), activation='relu', padding = 'valid', input_shape=(32, 32, 3)))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Conv2D(64, (3, 3), activation='relu', padding='valid'))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
+    model.add(Conv2D(128, (3, 3), activation='relu', padding='valid'))
+    model.add(BatchNormalization())
+    model.add(Activation('relu'))
 
-    # model.add(UpSampling2D(size = (2, 2)))
-    model.add(Conv2D(filters = hidden_layer_size, kernel_size = (3, 3), padding = 'valid', activation = 'relu'))
-    model.add(Conv2DTranspose(filters = 128, kernel_size = (3, 3), padding = 'valid', activation = 'relu'))
-    model.add(Conv2DTranspose(filters = 256, kernel_size = (3, 3), padding = 'valid', activation = 'relu'))
-    model.add(Conv2DTranspose(filters = 1, kernel_size = (3, 3), padding = 'valid', activation = 'sigmoid'))
+    model.add(Conv2DTranspose(128, (3, 3), activation='relu', padding='valid'))
+    model.add(Conv2DTranspose(64, (3, 3), activation='relu', padding='valid'))
+    model.add(Conv2DTranspose(3, (3, 3), activation='sigmoid', padding='valid'))
+    
     model.summary()
     return model
 
-#불러오기
+from tensorflow.keras.datasets import cifar10
+
+# cifar10 불러오기
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
-x_train, y_train = train_set
-x_test, y_test = test_set
+print(x_train.shape, x_test.shape)  # (50000, 32, 32, 3) (10000, 32, 32, 3)
 
-#쉐이프확인
-print("x_train.shape : ", x_train.shape)  #(50000, 32, 32, 3)
-print("x_test.shape : ", x_test.shape)    #(10000, 32, 32, 3)
-print("y_train.shape : ", y_train.shape)  #(50000, 1)
-print("y_test.shape : ", y_test.shape)    #(10000, 1)
+# # cifar10 레이블 1 car 이미지 만
+# x_train = x_train[np.where(y_train==1)[0],:,:,:]
+# x_test = x_test[np.where(y_test==1)[0],:,:,:]
+# print(x_train.shape, x_test.shape)  # (5000, 32, 32, 3) (1000, 32, 32, 3)
 
-
-#원핫인코딩
-from keras.utils import np_utils
-y_train = np_utils.to_categorical(y_train)
-y_test = np_utils.to_categorical(y_test)
-print("y_train의 shape : ", y_train.shape)   #(50000, 10)  
-print("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ")
+x_train = x_train.astype('float32')/255.
+x_test = x_test.astype('float32')/255.
 
 
-#데이터전처리 2. x의 정규화
-x_train = x_train.reshape(50000, 32, 32, 3).astype('float32') / 255.                                                                                                                                     
-x_test = x_test.reshape(10000, 32, 32, 3).astype('float32') / 255.
+model = autoencoder()
 
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
+# model.compile(optimizer='adam', loss='mse', metrics=['acc'])
 
-
-model = autoencoder(hidden_layer_size = 154)
-model.compile(optimize = 'adam', loss = 'binary_crossentropy', metrics = ['acc'])
-model.fit(x_train_noised, x_train, epochs = 10)
-
+model.fit(x_train, x_train, epochs=30, batch_size=128, shuffle=True, validation_data=(x_test, x_test))
 
 output = model.predict(x_test)
 
 from matplotlib import pyplot as plt
 import random
-fig, ((ax1, ax2, ax3, ax4, ax5), (ax6, ax7, ax8, ax9,ax10),(ax11, ax12, ax13, ax14,ax15)) = \
-    plt.subplots(3, 5, figsize=(20, 7))
+fig, ((ax1, ax2, ax3, ax4, ax5), (ax6, ax7, ax8, ax9, ax10)) = plt.subplots(2, 5, figsize=(17, 7))
 
+# 이미지 다섯 개를 무작위로 고른다
+random_images = random.sample(range(output.shape[0]), 5)
 
-
-#원본(입력) 이미지를 맨 위에 그린다
+# 원본(입력) 이미지를 맨 위에 그린다
 for i, ax in enumerate([ax1, ax2, ax3, ax4, ax5]):
-    ax.imshow(x_test[random_images[i]].reshape(28, 28), cmap = 'gray')
-    if i ==0:
-        ax.set_ylabel('INPUT', size = 40)
+    ax.imshow(x_test[random_images[i]].reshape(32, 32, 3), cmap='gray')
+    if i == 0:
+        ax.set_ylabel('INPUT', size = 25)
     ax.grid(False)
     ax.set_xticks([])
     ax.set_yticks([])
 
-
-# 오토인코더가 출력한 이미지를 아래에 그린다.
+# 오토인코더가 출력한 이미지를 아래에 그린다
 for i, ax in enumerate([ax6, ax7, ax8, ax9, ax10]):
-    ax.imshow(output[random_images[i]].reshape(28, 28), cmap = 'gray')
-    if i ==0:
-        ax.set_ylabel('OUTPUT', size = 40)
+    ax.imshow(output[random_images[i]].reshape(32, 32, 3), cmap='gray')
+    if i == 0:
+        ax.set_ylabel('OUTPUT', size = 25)
     ax.grid(False)
     ax.set_xticks([])
     ax.set_yticks([])
+
+plt.tight_layout()
 plt.show()
+
+# loss: 0.5479 - acc: 0.0121 - val_loss: 0.5489 - val_acc: 0.0121
